@@ -26,9 +26,7 @@ function degreesToLED (degrees: number) {
 let heading = 0
 let direction = ""
 input.calibrateCompass()
-let currentHeadingLED = 0
 let currentNorthLED = 0
-let previousHeadingLED = 0
 let previousNorthLED = 0
 let haloDisplay = kitronik_halo_hd.createZIPHaloDisplay(60)
 haloDisplay.clear()
@@ -36,15 +34,11 @@ haloDisplay.setBrightness(127)
 haloDisplay.show()
 basic.forever(function () {
     heading = input.compassHeading()
-    currentHeadingLED = degreesToLED(heading)
     currentNorthLED = degreesToLED(360 - heading)
-    if (currentHeadingLED != previousHeadingLED) {
-        haloDisplay.setZipLedColor(previousHeadingLED, kitronik_halo_hd.colors(ZipLedColors.Black))
-        haloDisplay.setZipLedColor(currentHeadingLED, kitronik_halo_hd.colors(ZipLedColors.Red))
+    if (currentNorthLED != previousNorthLED) {
         haloDisplay.setZipLedColor(previousNorthLED, kitronik_halo_hd.colors(ZipLedColors.Black))
         haloDisplay.setZipLedColor(currentNorthLED, kitronik_halo_hd.colors(ZipLedColors.White))
         haloDisplay.show()
-        previousHeadingLED = currentHeadingLED
         previousNorthLED = currentNorthLED
         basic.showString("" + (degreesToDirection(heading)))
     }
